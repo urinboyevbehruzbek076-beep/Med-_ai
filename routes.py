@@ -1,19 +1,14 @@
-from fastapi import APIRouter, Request
+from fastapi import APIRouter
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
-from typing import Optional
-from datetime import datetime
-
-from data import DRUGS_DATA, PHARMACY_INFO, ORDERS, USERS
-from models import UserRegister
+from fastapi.requests import Request
 
 router = APIRouter()
 templates = Jinja2Templates(directory="templates")
 
 @router.get("/", response_class=HTMLResponse)
-async def home(request: Request):
-    # pass pharmacy contact info to template for client-side use
-    return templates.TemplateResponse("index.html", {"request": request, "drugs": DRUGS_DATA, "pharmacy_info": PHARMACY_INFO})
+async def read_root(request: Request):
+    return templates.TemplateResponse("index.html", {"request": request})
 
 @router.post("/auth/register")
 async def register(user: UserRegister):

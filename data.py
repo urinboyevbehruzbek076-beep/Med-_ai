@@ -148,6 +148,16 @@ DRUGS_DATA = [
     {"id": 118, "name": "Vecuronium", "price": 18000, "count": 1, "pharmacy": "AsthmaRelief", "lat": 40.1220, "lon": 67.8470},
     {"id": 119, "name": "Succinylcholine", "price": 25000, "count": 0, "pharmacy": "BPControl", "lat": 40.1130, "lon": 67.8410},
     {"id": 120, "name": "Atracurium", "price": 22000, "count": 1, "pharmacy": "ThyroidMed", "lat": 40.1270, "lon": 67.8550},
+    {"id": 121, "name": "Cisatracurium", "price": 24000, "count": 1, "pharmacy": "Arzon 1", "lat": 40.1190, "lon": 67.8440},
+    {"id": 122, "name": "Pancuronium", "price": 20000, "count": 2, "pharmacy": "Grand-Pharm", "lat": 40.1110, "lon": 67.8370},
+    {"id": 123, "name": "Mivacurium", "price": 18000, "count": 1, "pharmacy": "Oksigen", "lat": 40.1260, "lon": 67.8530},
+    {"id": 124, "name": "Rocuronium", "price":50000, "count": 1, "pharmacy": "Dori-Darmon", "lat": 40.1160, "lon": 67.8410},
+    {"id": 125, "name": "Vecuronium", "price": 45000, "count": 1, "pharmacy": "Sog'lom", "lat": 40.1200, "lon": 67.8500},   
+    {"id": 126, "name": "Succinylcholine", "price": 55000, "count": 0, "pharmacy": "PharmaPlus", "lat": 40.1100, "lon": 67.8350},
+    {"id": 127, "name": "Atracurium", "price": 60000, "count": 1, "pharmacy": "MedCenter", "lat": 40.1300, "lon": 67.8550},
+    {"id": 128, "name": "Cisatracurium", "price": 65000, "count": 1, "pharmacy": "Apteka 24", "lat": 40.1050, "lon": 67.8300},
+    {"id": 129, "name": "Pancuronium", "price": 70000, "count": 2, "pharmacy": "Zdrav", "lat": 40.1220, "lon": 67.8470},    
+    
 ]
 
 # dynamic storage for orders and users

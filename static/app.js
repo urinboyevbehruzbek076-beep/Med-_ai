@@ -1,4 +1,4 @@
-// extracted client-side logic from index.html
+
 var pharmacies = JSON.parse(document.getElementById('pharm-info-json').textContent);
 var map = L.map('map').setView([40.1158, 67.8422], 13);
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
@@ -83,7 +83,7 @@ function renderDrugList(data, title = '💊 Jonli Omborxona') {
     markers = [];
 
     data.forEach(drug => {
-        // check phone info
+        
         let phoneHtml = '';
         const info = pharmacies[drug.pharmacy];
         if(info && info.phone) {
@@ -140,7 +140,7 @@ let pendingOrderId = null;
 let pendingCartIds = null;
 let cart = [];
 
-// cart helpers
+
 function addToCart(drug) {
     if(!cart.find(d=>d.id===drug.id)) {
         cart.push(drug);
@@ -176,7 +176,7 @@ function checkoutCart() {
         return;
     }
     pendingCartIds = cart.map(d=>d.id);
-    pendingOrderId = null; // clear single order
+    pendingOrderId = null; 
     document.getElementById('contact-phone').value = '';
     document.getElementById('contactModal').style.display = 'flex';
 }
@@ -208,12 +208,12 @@ function renderOrders(list) {
 
 async function orderDrug(id) {
     if(!currentUser) {
-        // not logged in – show registration modal
+        
         openModal();
         return;
     }
     if(currentUser.role !== 'user') {
-        // user must be a customer to place orders
+        
         openModal();
         return;
     }
@@ -246,7 +246,7 @@ async function submitContact() {
         const data = await res.json();
         if(data.success) {
             alert("✅ Buyurtma qabul qilindi! Kuryer yolda.");
-            // clear cart if used
+            
             if(pendingCartIds && pendingCartIds.length) {
                 cart = [];
                 renderCart();
@@ -262,12 +262,13 @@ async function submitContact() {
 
 async function askBot() {
     if(!currentUser) {
-        // send user to registration instead of alert
+        
         openModal();
         return;
     }
     const input = document.getElementById('chat-input');
     const box = document.getElementById('chat-box');
+
     if(!input.value) return;
 
     box.innerHTML += `<div class="text-right"><span class="bg-gray-100 p-2 rounded-lg inline-block text-[10px]">Siz: ${input.value}</span></div>`;
