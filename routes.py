@@ -31,7 +31,7 @@ PHARMACY_INFO = {
 router = APIRouter()
 
 base_path = os.path.dirname(os.path.abspath(__file__))
-templates = Jinja2Templates(directory=os.path.join(base_path, "templates"))
+templates = Jinja2Templates(directory=os.path.join(base_path, "shablonlar"))
 
 @router.get("/", response_class=HTMLResponse)
 async def read_root(request: Request):
