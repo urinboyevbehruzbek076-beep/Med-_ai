@@ -6,7 +6,7 @@ from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
 from pydantic import BaseModel
 
-# --- MODELLAR VA MA'LUMOTLAR (Database o'rniga) ---
+# --- MODELLAR ---
 class UserRegister(BaseModel):
     phone: str
     name: str
@@ -14,23 +14,36 @@ class UserRegister(BaseModel):
     lat: float
     lon: float
 
+# --- MA'LUMOTLAR (Database o'rniga) ---
 USERS = {}
 ORDERS = []
 DRUGS_DATA = [
     {"id": 1, "name": "Sitramon", "pharmacy": "Dori-Darmon", "price": 5000, "count": 10},
-    {"id": 2, "name": "Paratsetamol", "pharmacy": "Arzon Apteka", "price": 3000, "count": 5}
+    {"id": 2, "name": "Paratsetamol", "pharmacy": "Arzon Apteka", "price": 3000, "count": 5},
+    {"id": 3, "name": "Kardiamagnil", "pharmacy": "Grand Pharm", "price": 15000, "count": 8}
 ]
-PHARMACY_INFO = {"Dori-Darmon": {"address": "Toshkent sh.", "phone": "998901234567"}}
+PHARMACY_INFO = {
+    "Dori-Darmon": {"address": "Toshkent sh.", "phone": "998901234567"},
+    "Arzon Apteka": {"address": "Samarqand sh.", "phone": "998911112233"}
+}
 
 # --- ROUTER VA TEMPLATES ---
 router = APIRouter()
 
-base_path = os.path.dirname(file)
+base_path = os.path.dirname(os.path.abspath(__file__))
 templates = Jinja2Templates(directory=os.path.join(base_path, "templates"))
 
 @router.get("/", response_class=HTMLResponse)
 async def read_root(request: Request):
-    return templates.TemplateResponse("index.html", {"request": request})
+    # HTML faylingiz ichida {{ pharmacy_info | tojson }} kabi qismlar bo'lgani uchun
+    # barcha o'zgaruvchilarni context sifatida yuborish shart:
+    return templates.TemplateResponse("index.html", {
+        "request": request,
+        "pharmacy_info": PHARMACY_INFO,
+        "drugs_data": DRUGS_DATA,
+        "users": USERS,
+        "orders": ORDERS
+    })
 
 @router.post("/auth/register")
 async def register(user: UserRegister):
@@ -51,20 +64,19 @@ async def search_drug(q: str):
 async def ask_bot(text: str, phone: Optional[str] = None):
     text_lower = text.lower()
     
-    # Oddiy muloqot
-    smalltalk = {"salom": "Salom!", "hayr": "Xayr!"}
+    # Oddiy muloqot qismi
+    smalltalk = {"salom": "Assalomu alaykum!", "hayr": "Xayr, salomat bo'ling!"}
     for key, resp in smalltalk.items():
-        if key in text_lower: return {"reply": resp}
+        if key in text_lower:
+            return {"reply": resp}
 
-    # Kasalliklar bo'yicha qidiruv
-    disease_map = {"bosh": "Sitramon", "isitma": "Paratsetamol"}
+    # Kasallik bo'yicha dori tavsiyasi
+    disease_map = {"bosh": "Sitramon", "isitma": "Paratsetamol", "yurak": "Kardiamagnil"}
     for key, drug_name in disease_map.items():
         if key in text_lower:
             matches = [d for d in DRUGS_DATA if drug_name.lower() in d['name'].lower()]
             if matches:
                 d = matches[0]
-                return {"reply": f"{drug_name} mavjud: {d['pharmacy']}da. Narxi {d['price']} so'm."}
+                return {"reply": f"{drug_name} bor: {d['pharmacy']}da. Narxi {d['price']} so'm."}
     
-    return {"reply": "Tushunmadim, simptomni yozing."}
-
-# Qolgan barcha POST/GET metodlaringizni shu tartibda davom ettirishingiz mumkin
+    return {"reply": "Tushunmadim, iltimos simptomni yozing (masalan: bosh og'riyapti)."}
